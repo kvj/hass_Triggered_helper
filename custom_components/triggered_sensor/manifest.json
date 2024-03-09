@@ -1,0 +1,13 @@
+{
+  "domain": "triggered_sensor",
+  "name": "Triggered sensor",
+  "documentation": "https://github.com/kvj/hass_Triggered_helper",
+  "issue_tracker": "https://github.com/kvj/hass_Triggered_helper/issues",
+  "dependencies": [],
+  "codeowners": ["@kvj"],
+  "requirements": [],
+  "iot_class": "calculated",
+  "config_flow": true,
+  "integration_type": "helper",
+  "version": "0.1.0"
+}

@@ -1,0 +1,31 @@
+{
+  "title": "Triggered binary sensor",
+  "config": {
+    "step": {
+      "user": {
+        "title": "New Triggered binary sensor",
+        "description": "Binary sensor with state controlled by triggers",
+        "data": {
+          "name": "Name",
+          "on_triggers": "Triggers to set sensor to ON state",
+          "off_triggers": "Triggers to set sensor to OFF state"
+        }
+      }
+    },
+    "error": {
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Triggered binary sensor",
+        "data": {
+          "on_triggers": "Triggers to set sensor to ON state",
+          "off_triggers": "Triggers to set sensor to OFF state"
+        }
+      }
+    },
+    "error": {
+    }
+  }
+}
