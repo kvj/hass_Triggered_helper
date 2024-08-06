@@ -10,8 +10,6 @@ import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
 import logging
 
-import traceback
-
 _LOGGER = logging.getLogger(__name__)
 
 CONFIG_SCHEMA = vol.Schema({

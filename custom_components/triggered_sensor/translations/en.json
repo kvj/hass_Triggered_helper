@@ -7,6 +7,7 @@
         "description": "Binary sensor with state controlled by triggers",
         "data": {
           "name": "Name",
+          "init_conditions": "Initial condition",
           "on_triggers": "Triggers to set sensor to ON state",
           "off_triggers": "Triggers to set sensor to OFF state"
         }
@@ -20,6 +21,7 @@
       "init": {
         "title": "Triggered binary sensor",
         "data": {
+          "init_conditions": "Initial condition",
           "on_triggers": "Triggers to set sensor to ON state",
           "off_triggers": "Triggers to set sensor to OFF state"
         }

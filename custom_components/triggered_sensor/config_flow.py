@@ -18,6 +18,7 @@ from .constants import (
     DOMAIN,
     CONF_OFF_TRIGGERS,
     CONF_ON_TRIGGERS,
+    CONF_CONDITIONS,
 )
 
 import voluptuous as vol
@@ -26,6 +27,7 @@ import logging
 _LOGGER = logging.getLogger(__name__)
 
 OPTIONS_SCHEMA = vol.Schema({
+    vol.Required(CONF_CONDITIONS, description={"suggested_value": []}): selector.ConditionSelector(),
     vol.Required(CONF_ON_TRIGGERS, description={"suggested_value": []}): selector.TriggerSelector(),
     vol.Required(CONF_OFF_TRIGGERS, description={"suggested_value": []}): selector.TriggerSelector(),
 })

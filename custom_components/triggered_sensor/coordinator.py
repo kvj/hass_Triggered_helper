@@ -3,12 +3,13 @@ from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
 )
 from homeassistant.exceptions import HomeAssistantError
-from homeassistant.helpers import storage, trigger
+from homeassistant.helpers import storage, trigger, condition
 
 from .constants import (
     DOMAIN,
     CONF_ON_TRIGGERS,
     CONF_OFF_TRIGGERS,
+    CONF_CONDITIONS,
 )
 
 import logging
@@ -57,8 +58,6 @@ class Coordinator(DataUpdateCoordinator):
         self._entry = entry
         self._entry_id = entry.entry_id
 
-        self._config = entry.as_dict()["options"]
-
     async def _async_update(self):
         return self._platform.get_data(self._entry_id)
 
@@ -70,6 +69,8 @@ class Coordinator(DataUpdateCoordinator):
         await self._platform.async_put_data(self._entry_id, self.data)
 
     async def async_load(self):
+        self._config = self._entry.as_dict()["options"]
+
         _LOGGER.debug(f"async_load: {self._config}")
         self._remove_on_triggers = await trigger.async_initialize_triggers(
             self.hass, 
@@ -87,6 +88,15 @@ class Coordinator(DataUpdateCoordinator):
             name="triggered_sensor_off_trigger",
             log_cb=_LOGGER.log,
         )
+        conditions = self._config.get(CONF_CONDITIONS, [])
+        _LOGGER.debug(f"async_load: Check conditions: {conditions}")
+        if len(conditions):
+            fun = await condition.async_and_from_config(self.hass, {"conditions": conditions})
+            result = fun(self.hass)
+            _LOGGER.debug(f"async_load: Conditions evaluation: {result}")
+            await self._async_update_state({
+                "binary_sensor": result,
+            })
 
     async def async_unload(self):
         _LOGGER.debug(f"async_unload:")
