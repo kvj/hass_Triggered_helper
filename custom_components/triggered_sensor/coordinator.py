@@ -2,7 +2,6 @@ from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
     DataUpdateCoordinator,
 )
-from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import storage, trigger, condition
 
 from .constants import (
@@ -13,7 +12,6 @@ from .constants import (
 )
 
 import logging
-from datetime import datetime
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -92,11 +90,15 @@ class Coordinator(DataUpdateCoordinator):
         _LOGGER.debug(f"async_load: Check conditions: {conditions}")
         if len(conditions):
             fun = await condition.async_and_from_config(self.hass, {"conditions": conditions})
-            result = fun(self.hass)
-            _LOGGER.debug(f"async_load: Conditions evaluation: {result}")
-            await self._async_update_state({
-                "binary_sensor": result,
-            })
+            try:
+                result = fun(self.hass)
+                _LOGGER.debug(f"async_load: Conditions evaluation: {result}")
+                await self._async_update_state({
+                    "binary_sensor": result,
+                })
+            except:
+                _LOGGER.exception(f"async_load: initial condition check failed: {conditions}")
+
 
     async def async_unload(self):
         _LOGGER.debug(f"async_unload:")
